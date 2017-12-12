@@ -6,9 +6,9 @@
 #     move: A function that returns 'c' or 'b'
 ####
 
-team_name = 'The name the team gives to itself' # Only 10 chars displayed.
-strategy_name = 'The name the team gives to this strategy'
-strategy_description = 'How does this strategy decide?'
+team_name = 'Team 1' # Only 10 chars displayed.
+strategy_name = 'Pick random strategy'
+strategy_description = 'Randomly picks a strategy and uses it for the round'
     
 def move(my_history, their_history, my_score, their_score):
     ''' Arguments accepted: my_history, their_history are strings.
@@ -28,7 +28,68 @@ def move(my_history, their_history, my_score, their_score):
     
     return 'c'
 
+import random 
+
     
+def strategy_1(my_history):
+    if len(my_history)==0:
+        return 'c'
+    elif len(my_history)%3==0:
+        return 'c'
+    else:
+        return 'b'          
+    
+def strategy_2(my_history, their_history):
+    if len(my_history)==0: 
+        return 'c'
+    elif my_history[-1]=='c' and their_history[-1]=='b':
+        return 'b' 
+    else:
+        return 'c'
+        
+def strategy_3(my_history):
+    if len(my_history)==0:
+        return 'c'
+    elif my_history[-1]=='c':
+        return 'b'
+    else:
+        return 'c'
+    
+def strategy_4(their_history):
+    if their_history[-1] == 'c':
+        return 'c'
+    else:
+        return 'b'
+    
+def change_strategy(my_score, their_score):
+    if my_score <= (their_score - 1000):
+        change = 1
+    else:
+        change = 0
+        
+        
+change = 0
+   
+def move(my_history, their_history, my_score, their_score):
+    ''' Arguments accepted: my_history, their_history are strings.
+    my_score, their_score are ints.'''
+   
+    
+if len(my_history)==0:
+    strategy = random.choice(['strategy_1', 'strategy_2', 'strategy_3', 'strategy_4'])
+    if strategy == 'strategy_1':
+        strategy_1(my_history)
+    if strategy == 'strategy_2':
+        strategy_2(my_history, their_history)
+    if strategy == 'strategy_3':
+        strategy_3(my_history)
+    if strategy == 'strategy_4':
+        strategy_4(their_history)
+    if len(my_history)%3==0:
+        change_strategy(my_score, their_score)
+        if change == 1:
+            strategy = random.choice(['strategy_1', 'strategy_2', 'strategy_3', 'strategy_4'])
+                
 def test_move(my_history, their_history, my_score, their_score, result):
     '''calls move(my_history, their_history, my_score, their_score)
     from this module. Prints error if return value != result.
@@ -37,14 +98,13 @@ def test_move(my_history, their_history, my_score, their_score, result):
     real_result = move(my_history, their_history, my_score, their_score)
     if real_result == result:
         return True
-    else:
         print("move(" +
             ", ".join(["'"+my_history+"'", "'"+their_history+"'",
                        str(my_score), str(their_score)])+
             ") returned " + "'" + real_result + "'" +
             " and should have returned '" + result + "'")
         return False
-
+                              
 if __name__ == '__main__':
      
     # Test 1: Betray on first move.
@@ -53,7 +113,7 @@ if __name__ == '__main__':
               my_score=0,
               their_score=0,
               result='b'):
-         print 'Test passed'
+              print
      # Test 2: Continue betraying if they collude despite being betrayed.
     test_move(my_history='bbb',
               their_history='ccc', 
@@ -65,4 +125,4 @@ if __name__ == '__main__':
               # move('bbb', 'ccc', 0, 0) returns 'b'.
               my_score=0, 
               their_score=0,
-              result='b')             
+              result='b')     
